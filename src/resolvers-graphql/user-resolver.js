@@ -73,20 +73,23 @@ let users = [
 const resolvers = {
     Query: {
         getUsers: () => users,
-        getUser: (args) => users.find(user => user.id == args.id)
+        getUser: (_, args) => {
+            console.log(args);
+            return users.find(user => user.id == args.id)
+        }
     },
     Mutation: {
-        createUser(args) {
+        createUser(_, args) {
             const id = users.length + 1;
             const name = args.name;
             const email = args.email;
             const lastname = args.lastname;
-            const password = args.password
+            const password = args.password;
             const newUser = { id, name, email, lastname, password };
             users.push(newUser);
             return newUser;
         },
-        updateUser(args) {
+        updateUser(_, args) {
             const id = args.id;
             const name = args.name;
             const email = args.email;
@@ -99,7 +102,7 @@ const resolvers = {
             user.password = password;
             return user;
         },
-        deleteUser(args) {
+        deleteUser(_, args) {
             const id = args.id;
             users = users.filter(user => user.id != id);
             return 'User deleted';
